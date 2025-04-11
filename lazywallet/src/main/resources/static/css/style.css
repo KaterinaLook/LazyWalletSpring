@@ -1,0 +1,129 @@
+/* static/css/style.css */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.container {
+    display: grid;
+    grid-template-areas:
+        "chart calculator"
+        "footer footer";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 80px;
+    height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.chart-section,
+.calculator-section {
+    height: calc((100vh - 80px - 40px) / 1.2);
+    overflow: hidden;
+}
+
+.chart-section {
+    grid-area: chart;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.chart-section canvas,
+.chart-section #expensesChart {
+    aspect-ratio: 1 / 1;
+    height: 90%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+#expensesChart {
+    aspect-ratio: 1 / 1;
+    height: 90%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.calculator-section {
+    grid-area: calculator;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.calculator-section .display {
+    font-size: 1.5em;
+    background-color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 10px;
+    text-align: right;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.calculator-section .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.calculator-section .keypad button {
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.calculator-section .keypad button:hover {
+    background-color: #45a049;
+}
+
+.calculator-section select,
+.calculator-section input,
+.calculator-section button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: 0.9em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.footer-section {
+    grid-area: footer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 8px 16px;
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+}
+
+.footer-section button {
+    font-size: 0.9em;
+    padding: 8px;
+}
