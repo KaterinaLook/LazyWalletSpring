@@ -1,12 +1,75 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LazyWallet</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1 th:text="${message}"></h1>
+<div class="container">
+    <!-- Верхняя левая часть — диаграмма -->
+    <div class="chart-section">
+        <h2>Расходы</h2>
+        <canvas id="expensesChart"></canvas>
+    </div>
+
+    <!-- Правая часть — калькулятор -->
+    <div class="calculator-section">
+        <h2>Добавить операцию</h2>
+
+        <div class="display" id="display">0</div>
+
+        <div class="keypad">
+            <button onclick="pressKey('1')">1</button>
+            <button onclick="pressKey('2')">2</button>
+            <button onclick="pressKey('3')">3</button>
+            <button onclick="pressKey('4')">4</button>
+            <button onclick="pressKey('5')">5</button>
+            <button onclick="pressKey('6')">6</button>
+            <button onclick="pressKey('7')">7</button>
+            <button onclick="pressKey('8')">8</button>
+            <button onclick="pressKey('9')">9</button>
+            <button onclick="pressKey('0')">0</button>
+            <button onclick="clearDisplay()">Стереть</button>
+        </div>
+
+        <select id="type">
+            <option value="expense">Расход</option>
+            <option value="income">Доход</option>
+        </select>
+        <select id="categorySelect">
+            <option value="food">Food</option>
+            <option value="entertainment">Развлечения</option>
+            <option value="transport">Транспорт</option>
+            <option value="add_new_category">Добавить новую категорию...</option>
+        </select>
+
+        <!-- Form for adding a new category -->
+        <div id="newCategoryForm" style="display:none;">
+            <input type="text" id="newCategoryName" placeholder="Введите название категории">
+            <button id="submitNewCategory">Добавить</button>
+        </div>
+
+        <input type="text" id="category" placeholder="Категория">
+
+        <button onclick="addTransaction()">Добавить</button>
+    </div>
+
+    <!-- Блок для отображения категорий -->
+    <div id="categoryLabels"></div>
+
+    <!-- Bottom -->
+    <div class="footer-section">
+        <button>Загрузить из банка</button>
+        <button>Сделать отчет</button>
+        <button>Импортировать CSV</button>
+    </div>
+
+</div>
+
+<!-- Библиотека для диаграмм -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/app.js}"></script>
 </body>
 </html>
