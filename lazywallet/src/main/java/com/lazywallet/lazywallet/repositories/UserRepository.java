@@ -1,4 +1,4 @@
-package com.lazywallet.lazywallet.repository;
+package com.lazywallet.lazywallet.repositories;
 
 import com.lazywallet.lazywallet.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
      */
     Optional<User> findByEmailIgnoreCase(String email);
 
+    Optional<User> findByUserNameIgnoreCase(String userName);
     /**
      * Проверяет существование пользователя с email
      * @param email Email для проверки
@@ -33,36 +34,37 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmailIgnoreCase(String email);
 
     /**
-     * Проверяет существование пользователя с username
-     * @param username Имя пользователя для проверки
+     * Проверяет существование пользователя с userName
+     * @param userName Имя пользователя для проверки
      * @return true если имя занято
      */
-    boolean existsByUsernameIgnoreCase(String username);
+    boolean existsByUserNameIgnoreCase(String userName);
 
     /**
      * Находит пользователя с подгруженными счетами
      * @param userId ID пользователя
      * @return Optional с пользователем и его счетами
      */
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.accounts WHERE u.id = :userId")
-    Optional<User> findByIdWithAccounts(@Param("userId") UUID userId);
+//    @Query("SELECT u FROM User u LEFT JOIN FETCH u.accounts WHERE u.userId = :userId")
+//    Optional<User> findByIdWithAccounts(@Param("userId") UUID userId);
 
     /**
+     *
      * Находит пользователя с подгруженными категориями
      * @param userId ID пользователя
      * @return Optional с пользователем и его категориями
      */
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.categories WHERE u.id = :userId")
-    Optional<User> findByIdWithCategories(@Param("userId") UUID userId);
+//    @Query("SELECT u FROM User u LEFT JOIN FETCH u.categories WHERE u.userId = :userId")
+//    Optional<User> findByIdWithCategories(@Param("userId") UUID userId);
 
     /**
      * Находит пользователя по ID с полной загрузкой связанных данных
      * @param userId ID пользователя
      * @return Optional с полностью загруженным пользователем
      */
-    @Query("SELECT u FROM User u " +
-            "LEFT JOIN FETCH u.accounts " +
-            "LEFT JOIN FETCH u.categories " +
-            "WHERE u.id = :userId")
-    Optional<User> findByIdFull(@Param("userId") UUID userId);
+//    @Query("SELECT u FROM User u " +
+//            "LEFT JOIN FETCH u.accounts " +
+//            "LEFT JOIN FETCH u.categories " +
+//            "WHERE u.userId = :userId")
+//    Optional<User> findByIdFull(@Param("userId") UUID userId);
 }

@@ -1,7 +1,7 @@
 package com.lazywallet.lazywallet.exceptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,12 +19,23 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.badRequest().body(new ErrorResponse("Validation failed", errors));
+        return ResponseEntity.badRequest().body(new ErrorResponse("Validation failed", errors, HttpStatus.BAD_REQUEST.value()));
     }
     @ExceptionHandler(InsufficientFundsException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientFunds(InsufficientFundsException ex) {
         ErrorResponse response = new ErrorResponse(
                 ex.getMessage(),
+                List.of(),
+                HttpStatus.BAD_REQUEST.value()
+        );
+        return ResponseEntity.badRequest().body(response);
+    }
+    // Обработка ошибки уже существующего email
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+        ErrorResponse response = new ErrorResponse(
+                ex.getMessage(),
+                List.of(), // список деталей пустой
                 HttpStatus.BAD_REQUEST.value()
         );
         return ResponseEntity.badRequest().body(response);

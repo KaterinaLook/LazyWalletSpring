@@ -1,4 +1,4 @@
-package com.lazywallet.lazywallet.models;
-
-public class Expense {
-}
+//package com.lazywallet.lazywallet.models;
+//
+//public class Expense {
+//}

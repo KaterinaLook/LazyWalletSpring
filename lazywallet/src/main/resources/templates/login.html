@@ -1,0 +1,25 @@
+<!-- templates/login.html -->
+<!--suppress HtmlUnknownAttribute -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход | LazyWallet</title>
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+<div class="container">
+    <h2>LazyWallet</h2>
+    <form th:action="@{/login}" method="post" class="form">
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName" required class="input">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required class="input">
+
+        <button type="submit" class="button">Submit</button>
+    </form>
+    <p>Нет аккаунта? <a th:href="@{/register}">Зарегистрироваться</a></p>
+</div>
+</body>
+</html>
