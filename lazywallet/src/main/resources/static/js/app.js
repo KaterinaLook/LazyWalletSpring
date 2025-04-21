@@ -26,11 +26,11 @@ const ctx = document.getElementById('expensesChart').getContext('2d');
 const chart = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ['Еда', 'Транспорт', 'Развлечения'],
+        labels: ['Еда', 'Транспорт', 'Развлечения', 'Food'],
         datasets: [{
             label: 'Траты',
-            data: [1200, 800, 500],
-            backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe']
+            data: [1200, 800, 500, 700],
+            backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#fee165']
         }]
     },
     options: {
@@ -137,6 +137,15 @@ function updateCategoryLabels() {
         categoryLabelsDiv.appendChild(label);
     });
 }
+document.getElementById('transactionForm').addEventListener('submit', function (event) {
+    // Присваиваем текущие значения в скрытые поля формы
+    document.getElementById('amountInput').value = displayValue || "0";
 
+    // если хочешь, можно проверить, что поля заполнены
+    if (!displayValue) {
+        alert("Add amount");
+        event.preventDefault();
+    }
+});
 // Вызовем эту функцию, когда нужно обновить метки (например, после добавления новой категории)
 updateCategoryLabels();

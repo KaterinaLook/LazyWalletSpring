@@ -9,6 +9,8 @@ import java.util.*;
 
 /**
  * Сущность пользователя системы
+ * The User entity represents a system user with credentials
+ * and personal information.
  */
 @Entity
 @Table(name = "users",
@@ -37,6 +39,7 @@ public class User {
 
     @Column(nullable = false)
     private String passwordHash;
+
     // Ручные сеттеры с валидацией
     public void setUserName(String userName) {
         if (userName == null || userName.trim().isEmpty()) {
@@ -57,6 +60,10 @@ public class User {
         }
         this.passwordHash = passwordHash;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions = new ArrayList<>();
+
 //    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)
 //    private UserRole role = UserRole.USER;
@@ -73,39 +80,8 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<Category> categories = new HashSet<>();
 //
-//    @OneToMany(mappedBy = "user")
-//    private List<Transaction> transactions = new ArrayList<>();
-
-    // Жизненные циклы
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdAt = LocalDateTime.now();
-//        this.updatedAt = LocalDateTime.now();
-//    }
-//
-//    @PreUpdate
-//    protected void onUpdate() {
-//        this.updatedAt = LocalDateTime.now();
-//    }
-
-    // Бизнес-методы
-//    public void addAccount(Account account) {
-//        this.accounts.add(account);
-//        account.setUser(this);
-//    }
-
-//    public void setRole(UserRole role) {
-//        if (role == null) {
-//            throw new IllegalArgumentException("Role cannot be null");
-//        }
-//        this.role = role;
-//    }
 
     // Геттеры для коллекций как read-only
-//    public Set<Account> getAccounts() {
-//        return Collections.unmodifiableSet(accounts);
-//    }
-//
 //    public Set<Category> getCategories() {
 //        return Collections.unmodifiableSet(categories);
 //    }

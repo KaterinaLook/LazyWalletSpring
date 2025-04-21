@@ -1,0 +1,4 @@
+2025-04-21 03:04:20.422221+03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]SELECR * FROM TRANSACTIONS"; ожидалось "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SELECR * FROM TRANSACTIONS"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SELECR * FROM TRANSACTIONS [42001-232]

@@ -12,12 +12,14 @@
     <h2>LazyWallet</h2>
     <form th:action="@{/login}" method="post" class="form">
         <label for="userName">User Name:</label>
-        <input type="text" id="userName" name="userName" required class="input">
+        <input type="text" id="username" name="username" required class="input">
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required class="input">
-
-        <button type="submit" class="button">Submit</button>
+        <div th:if="${param.error}">
+            <p class="error">Неверный логин или пароль. Попробуйте снова.</p>
+        </div>
+        <button type="submit" class="button">Log In</button>
     </form>
     <p>Нет аккаунта? <a th:href="@{/register}">Зарегистрироваться</a></p>
 </div>

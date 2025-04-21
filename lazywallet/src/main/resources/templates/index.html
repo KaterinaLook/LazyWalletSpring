@@ -17,8 +17,10 @@
     <!-- Правая часть — калькулятор -->
     <div class="calculator-section">
         <h2>Добавить операцию</h2>
-
+        <form id="transactionForm" action="/add-transaction" method="post">
+            <input type="hidden" name="user_id" value="${user.id}" />
         <div class="display" id="display">0</div>
+        <input type="hidden" id="amountInput" name="amount" value="0" />
 
         <div class="keypad">
             <button onclick="pressKey('1')">1</button>
@@ -32,6 +34,7 @@
             <button onclick="pressKey('9')">9</button>
             <button onclick="pressKey('0')">0</button>
             <button onclick="clearDisplay()">Стереть</button>
+
         </div>
 
         <select id="type">
@@ -53,7 +56,8 @@
 
         <input type="text" id="category" placeholder="Категория">
 
-        <button onclick="addTransaction()">Добавить</button>
+        <button type="submit">Добавить</button>
+        </form>
     </div>
 
     <!-- Блок для отображения категорий -->
