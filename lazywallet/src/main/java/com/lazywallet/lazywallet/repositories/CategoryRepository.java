@@ -15,4 +15,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByUserOrUserIsNull(User user); // Все категории: кастомные и дефолтные
 
     List<Category> findByUserOrUserIsNullAndType(User user, CategoryType type); // если хочешь фильтровать по типу
+
+    boolean existsByNameIgnoreCaseAndUser(String name, User user);
+
 }

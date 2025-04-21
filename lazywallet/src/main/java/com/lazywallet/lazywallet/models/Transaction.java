@@ -1,6 +1,5 @@
 package com.lazywallet.lazywallet.models;
 
-import com.lazywallet.lazywallet.exceptions.InsufficientFundsException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -33,8 +32,9 @@ public class Transaction {
     @Getter
     @PastOrPresent(message = "Date cannot be in the future")
     @Column(nullable = false)
-    private LocalDateTime date;
+    private final LocalDateTime DATE;
 
+    @Getter
     @NotNull(message = "Category is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
@@ -46,7 +46,7 @@ public class Transaction {
     private User user;
 
     public Transaction() {
-        this.date = LocalDateTime.now();
+        this.DATE = LocalDateTime.now();
     }
 
     public Transaction(BigDecimal amount, Category category, User user) {
@@ -84,8 +84,8 @@ public class Transaction {
     @Override
     public String toString() {
         return String.format(
-                "Transaction[id=%d, amount=%.2f, date=%s, category=%s]",
-                id, amount, date  //, category.getName()
+                "Transaction[id=%d, amount=%.2f, DATE=%s, category=%s]",
+                id, amount, DATE  //, category.getName()
         );
     }
     /**
