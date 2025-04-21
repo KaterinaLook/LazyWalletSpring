@@ -35,10 +35,10 @@ public class Transaction {
     @Column(nullable = false)
     private LocalDateTime date;
 
-//    @NotNull(message = "Category is required")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id", nullable = false)
-//    private Category category;
+    @NotNull(message = "Category is required")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
     @Setter
     @NotNull(message = "User is required")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,10 +49,10 @@ public class Transaction {
         this.date = LocalDateTime.now();
     }
 
-    public Transaction(BigDecimal amount,  User user) {//Category category,
+    public Transaction(BigDecimal amount, Category category, User user) {
         this();
-        this.amount = amount;
-//        this.category = category;
+        setAmount(amount);
+        setCategory(category);
         this.user = user;
     }
 
@@ -64,9 +64,9 @@ public class Transaction {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
     }
 
-//    public void setCategory(Category category) {
-//        this.category = Objects.requireNonNull(category, "Category cannot be null");
-//    }
+    public void setCategory(Category category) {
+        this.category = Objects.requireNonNull(category, "Category cannot be null");
+    }
 
     // ========== equals/hashCode/toString ==========
     @Override

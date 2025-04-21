@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 @Configuration
 @RequiredArgsConstructor
@@ -28,7 +32,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessHandler (customLogoutSuccessHandler())
                         .permitAll()
                 )
                 .headers(headers -> headers
@@ -44,6 +48,17 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public LogoutSuccessHandler customLogoutSuccessHandler() {
+        return (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+            if (authentication != null && authentication.getName() != null) {
+                System.out.println("Пользователь вышел из системы: " + authentication.getName());
+            } else {
+                System.out.println("Неавторизованный пользователь вышел");
+            }
+            response.sendRedirect("/login?logout");
+        };
     }
 
 }

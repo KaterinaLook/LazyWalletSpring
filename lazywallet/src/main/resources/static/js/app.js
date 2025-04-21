@@ -1,23 +1,25 @@
-let displayValue = "";
-
 // Обработчик нажатия клавиши калькулятора
 function pressKey(value) {
-    if (displayValue === "0") displayValue = "";
-    displayValue += value;
-    updateDisplay();
-}
-
-// Очистка дисплея калькулятора
-function clearDisplay() {
-    displayValue = "";
-    updateDisplay();
-}
-
-// Обновление дисплея
-function updateDisplay() {
     const display = document.getElementById("display");
-    if (display) {
-        display.innerText = displayValue || "0";
+    let current = display.textContent;
+
+    if (current === "0") current = "";
+    current += value;
+
+    display.textContent = current;
+    document.getElementById("amountInput").value = current;
+}
+
+function backspace() {
+    let display = document.getElementById("display");
+    let current = display.textContent;
+
+    if (current.length > 1) {
+        display.textContent = current.slice(0, -1);
+        document.getElementById("amountInput").value = display.textContent;
+    } else {
+        display.textContent = "0";
+        document.getElementById("amountInput").value = "0";
     }
 }
 
@@ -41,15 +43,16 @@ const chart = new Chart(ctx, {
 
 // Обработка добавления транзакции
 function addTransaction() {
-    const amount = displayValue || document.getElementById('amount')?.value;
-    const type = document.getElementById('type').value;
-    const category = document.getElementById('category').value;
-    alert(`Добавлена операция: ${type} на ${amount} в категории ${category}`);
+    const amount = document.getElementById('display').textContent || "0";
+        const type = document.getElementById('type').value;
+        const category = document.getElementById('category').value;
 
-    // Очистим калькулятор
-    displayValue = "";
-    updateDisplay();
-    document.getElementById('category').value = "";
+        alert(`Добавлена операция: ${type} на ${amount} в категории ${category}`);
+
+        // Очистим калькулятор
+        document.getElementById("display").textContent = "0";
+        document.getElementById("amountInput").value = "0";
+        document.getElementById('category').value = "";
 }
 
 // Получаем элементы для работы с категориями
@@ -69,18 +72,24 @@ let categories = [
 function populateCategorySelect() {
     categorySelect.innerHTML = ''; // Очищаем текущие элементы
 
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.name;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
-    });
+    fetch('/api/categories')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.name;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
 
-    // Добавляем опцию для добавления новой категории
-    const addOption = document.createElement('option');
-    addOption.value = "add_new_category";
-    addOption.textContent = "Добавить новую категорию...";
-    categorySelect.appendChild(addOption);
+                const addOption = document.createElement('option');
+                addOption.value = "add_new_category";
+                addOption.textContent = "Add new category...";
+                categorySelect.appendChild(addOption);
+            })
+            .catch(error => {
+                console.error("Ошибка загрузки категорий:", error);
+            });
 }
 
 // Показываем форму для добавления новой категории при выборе "Добавить новую категорию"
@@ -138,11 +147,10 @@ function updateCategoryLabels() {
     });
 }
 document.getElementById('transactionForm').addEventListener('submit', function (event) {
-    // Присваиваем текущие значения в скрытые поля формы
-    document.getElementById('amountInput').value = displayValue || "0";
+    const amount = document.getElementById('display').textContent || "0";
+    document.getElementById('amountInput').value = amount;
 
-    // если хочешь, можно проверить, что поля заполнены
-    if (!displayValue) {
+   if (amount === "0" || amount.trim() === "") {
         alert("Add amount");
         event.preventDefault();
     }

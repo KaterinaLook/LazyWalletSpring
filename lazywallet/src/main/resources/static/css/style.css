@@ -112,6 +112,13 @@ body {
     border: 1px solid #ccc;
 }
 
+.calculator-section button{
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+}
+
+
 .footer-section {
     grid-area: footer;
     display: flex;
@@ -126,4 +133,11 @@ body {
 .footer-section button {
     font-size: 0.9em;
     padding: 8px;
+
+}
+.logout-button {
+    background-color: #f44336;
+    color: white
+.logout-button:hover {
+    background-color: #d32f2f;
 }

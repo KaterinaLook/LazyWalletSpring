@@ -10,53 +10,41 @@
 <div class="container">
     <!-- Верхняя левая часть — диаграмма -->
     <div class="chart-section">
-        <h2>Расходы</h2>
+        <p>Hello, <span th:text="${username}">User</span>!</p>
         <canvas id="expensesChart"></canvas>
     </div>
 
     <!-- Правая часть — калькулятор -->
     <div class="calculator-section">
-        <h2>Добавить операцию</h2>
+        <h2>Add expense or income</h2>
         <form id="transactionForm" action="/add-transaction" method="post">
-            <input type="hidden" name="user_id" value="${user.id}" />
-        <div class="display" id="display">0</div>
-        <input type="hidden" id="amountInput" name="amount" value="0" />
+            <div class="display" id="display">0</div>
+            <input type="hidden" id="amountInput" name="amount" value="0" />
 
-        <div class="keypad">
-            <button onclick="pressKey('1')">1</button>
-            <button onclick="pressKey('2')">2</button>
-            <button onclick="pressKey('3')">3</button>
-            <button onclick="pressKey('4')">4</button>
-            <button onclick="pressKey('5')">5</button>
-            <button onclick="pressKey('6')">6</button>
-            <button onclick="pressKey('7')">7</button>
-            <button onclick="pressKey('8')">8</button>
-            <button onclick="pressKey('9')">9</button>
-            <button onclick="pressKey('0')">0</button>
-            <button onclick="clearDisplay()">Стереть</button>
+            <div class="keypad">
+                <button type="button" onclick="pressKey('1')">1</button>
+                <button type="button" onclick="pressKey('2')">2</button>
+                <button type="button" onclick="pressKey('3')">3</button>
+                <button type="button" onclick="pressKey('4')">4</button>
+                <button type="button" onclick="pressKey('5')">5</button>
+                <button type="button" onclick="pressKey('6')">6</button>
+                <button type="button" onclick="pressKey('7')">7</button>
+                <button type="button" onclick="pressKey('8')">8</button>
+                <button type="button" onclick="pressKey('9')">9</button>
+                <button type="button" onclick="pressKey('0')">0</button>
+                <button type="button" onclick="backspace()">⌫</button>
+            </div>
 
-        </div>
+            <select id="type" name="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+            <select id="categorySelect">
 
-        <select id="type">
-            <option value="expense">Расход</option>
-            <option value="income">Доход</option>
-        </select>
-        <select id="categorySelect">
-            <option value="food">Food</option>
-            <option value="entertainment">Развлечения</option>
-            <option value="transport">Транспорт</option>
-            <option value="add_new_category">Добавить новую категорию...</option>
-        </select>
+                <option value="add_new_category">Add new category...</option>
+            </select>
 
-        <!-- Form for adding a new category -->
-        <div id="newCategoryForm" style="display:none;">
-            <input type="text" id="newCategoryName" placeholder="Введите название категории">
-            <button id="submitNewCategory">Добавить</button>
-        </div>
-
-        <input type="text" id="category" placeholder="Категория">
-
-        <button type="submit">Добавить</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
 
@@ -65,9 +53,12 @@
 
     <!-- Bottom -->
     <div class="footer-section">
-        <button>Загрузить из банка</button>
-        <button>Сделать отчет</button>
-        <button>Импортировать CSV</button>
+        <button>Import from bank</button>
+        <button>Make a report</button>
+        <button>Import CSV</button>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
     </div>
 
 </div>
