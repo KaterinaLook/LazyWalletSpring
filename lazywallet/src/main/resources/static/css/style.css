@@ -129,7 +129,7 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.calculator-section .keypad button:hover {
+.calculator-section button:hover {
     background-color: #45a049;
 }
 
@@ -149,7 +149,6 @@ body {
     color: white;
     cursor: pointer;
 }
-
 
 .footer-section {
     grid-area: footer;

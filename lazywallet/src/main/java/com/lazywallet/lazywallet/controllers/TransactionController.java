@@ -65,6 +65,7 @@ public class TransactionController {
         return "redirect:/"; // обновить страницу
     }
     @GetMapping("/api/transactions/stats")
+    @ResponseBody
     public List<Map<String, Object>> getExpenseStats(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUserNameIgnoreCase(userDetails.getUsername()).orElse(null);
         if (user == null) return Collections.emptyList();

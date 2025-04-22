@@ -123,7 +123,7 @@
                const values = data.map(item => item.total);
 
                if (expensesChart) {
-                   expensesChart.destroy(); // удалим предыдущий график
+                   expensesChart.destroy();
                }
 
                const ctx = document.getElementById('expensesChart').getContext('2d');
@@ -150,20 +150,48 @@
    }
 
 document.getElementById('transactionForm').addEventListener('submit', function (event) {
-    const amount = document.getElementById('display').textContent || "0";
+    event.preventDefault(); // отключаем обычную отправку формы
+
+    const amount = document.getElementById('display').textContent.trim();
+    const type = document.getElementById('type').value;
     const category = document.getElementById('categorySelect').value;
 
-    document.getElementById('amountInput').value = amount;
-
-    if (amount === "0" || amount.trim() === "") {
+    if (!amount || amount === "0") {
         alert("Add amount");
-        event.preventDefault();
+        return;
     }
 
     if (!category || category === "add_new_category") {
         alert("Please choose a valid category");
-        event.preventDefault();
+        return;
     }
+
+    const formData = new URLSearchParams();
+    formData.append("amount", amount);
+    formData.append("type", type);
+    formData.append("category", category);
+
+    fetch('/add-transaction', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Успешно добавлено, обновим график
+            loadExpenseChart();
+            document.getElementById('display').textContent = "0";
+            document.getElementById('amountInput').value = "0";
+        } else {
+            throw new Error("Ошибка при добавлении транзакции");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Не удалось добавить транзакцию");
+    });
 });
 
 window.addEventListener('DOMContentLoaded', () => {
