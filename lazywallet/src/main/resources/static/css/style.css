@@ -1,4 +1,36 @@
 /* static/css/style.css */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* затемнение */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover {
+    color: black;
+}
 body {
     font-family: sans-serif;
     margin: 0;
@@ -97,7 +129,7 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.calculator-section .keypad button:hover {
+.calculator-section button:hover {
     background-color: #45a049;
 }
 
@@ -110,6 +142,12 @@ body {
     font-size: 0.9em;
     border-radius: 8px;
     border: 1px solid #ccc;
+}
+
+.calculator-section button{
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
 }
 
 .footer-section {
@@ -126,4 +164,11 @@ body {
 .footer-section button {
     font-size: 0.9em;
     padding: 8px;
+
+}
+.logout-button {
+    background-color: #f44336;
+    color: white
+.logout-button:hover {
+    background-color: #d32f2f;
 }

@@ -1,0 +1,68 @@
+/* static/css/register.css */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -8px;
+    margin-bottom: 10px;
+}
+.error-message {
+    background-color: #ffe0e0;
+    color: #b00020;
+    border: 1px solid #ffcccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+p {
+    margin-top: 15px;
+}

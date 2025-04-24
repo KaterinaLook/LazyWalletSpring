@@ -1,142 +1,200 @@
-let displayValue = "";
+    function pressKey(value) {
+        const display = document.getElementById("display");
+        let current = display.textContent;
 
-// Обработчик нажатия клавиши калькулятора
-function pressKey(value) {
-    if (displayValue === "0") displayValue = "";
-    displayValue += value;
-    updateDisplay();
-}
+        if (current === "0") current = "";
+        current += value;
 
-// Очистка дисплея калькулятора
-function clearDisplay() {
-    displayValue = "";
-    updateDisplay();
-}
-
-// Обновление дисплея
-function updateDisplay() {
-    const display = document.getElementById("display");
-    if (display) {
-        display.innerText = displayValue || "0";
+        display.textContent = current;
+        document.getElementById("amountInput").value = current;
     }
-}
 
-// Настройка диаграммы
-const ctx = document.getElementById('expensesChart').getContext('2d');
-const chart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: ['Еда', 'Транспорт', 'Развлечения'],
-        datasets: [{
-            label: 'Траты',
-            data: [1200, 800, 500],
-            backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe']
-        }]
-    },
-    options: {
-        responsive: true, // Делает диаграмму адаптивной
-        maintainAspectRatio: false, // Разрешаем изменять пропорции диаграммы
+    function backspace() {
+        let display = document.getElementById("display");
+        let current = display.textContent;
+
+        if (current.length > 1) {
+            display.textContent = current.slice(0, -1);
+            document.getElementById("amountInput").value = display.textContent;
+        } else {
+            display.textContent = "0";
+            document.getElementById("amountInput").value = "0";
+        }
     }
-});
 
-// Обработка добавления транзакции
-function addTransaction() {
-    const amount = displayValue || document.getElementById('amount')?.value;
+    const categorySelect = document.getElementById('categorySelect');
+    const newCategoryModal = document.getElementById('newCategoryModal');
+    const newCategoryName = document.getElementById('newCategoryName');
+    const submitNewCategory = document.getElementById('submitNewCategory');
+    const closeModalBtn = document.querySelector('.close');
+
+    function populateCategorySelect() {
+        const selectedType = document.getElementById('type').value.toUpperCase();
+        categorySelect.innerHTML = '';
+
+        fetch('/api/categories')
+            .then(response => response.json())
+            .then(data => {
+                const filtered = data.filter(category => category.type === selectedType);
+                filtered.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.name;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+
+                const addOption = document.createElement('option');
+                addOption.value = "add_new_category";
+                addOption.textContent = "Add new category...";
+                categorySelect.appendChild(addOption);
+            })
+            .catch(error => {
+                console.error("Error loading categories:", error);
+            });
+    }
+
+    categorySelect.addEventListener('change', function () {
+        if (categorySelect.value === 'add_new_category') {
+            newCategoryModal.style.display = 'block';
+        }
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+        newCategoryModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === newCategoryModal) {
+            newCategoryModal.style.display = 'none';
+        }
+    });
+
+   submitNewCategory.addEventListener('click', function () {
+       const newCategory = newCategoryName.value.trim();
+       const selectedType = document.getElementById('type').value.toUpperCase(); // "EXPENSE" или "INCOME"
+
+       if (!newCategory) {
+           alert("Enter category!");
+           return;
+       }
+
+       // Подготовим JSON объект
+       const categoryData = {
+           name: newCategory,
+           type: selectedType
+       };
+
+       // Отправим POST-запрос
+       fetch('/api/categories/add', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(categoryData)
+       })
+       .then(response => {
+           if (response.ok) {
+               return response.text();
+           } else if (response.status === 409) {
+               throw new Error("This category already exists");
+           } else {
+               throw new Error("Failed to add category");
+           }
+       })
+       .then(message => {
+           alert(message);
+           newCategoryModal.style.display = 'none';
+           newCategoryName.value = '';
+           populateCategorySelect();
+       })
+       .catch(error => {
+           alert(error.message);
+       });
+   });
+
+    // Настройка диаграммы расходов
+   let expensesChart; // глобальная переменная
+
+   function loadExpenseChart() {
+       fetch('/api/transactions/stats')
+           .then(response => response.json())
+           .then(data => {
+               const labels = data.map(item => item.category);
+               const values = data.map(item => item.total);
+
+               if (expensesChart) {
+                   expensesChart.destroy();
+               }
+
+               const ctx = document.getElementById('expensesChart').getContext('2d');
+               expensesChart = new Chart(ctx, {
+                   type: 'pie',
+                   data: {
+                       labels: labels,
+                       datasets: [{
+                           label: 'Expenses',
+                           data: values,
+                           backgroundColor: [
+                               '#ff6384', '#36a2eb', '#cc65fe', '#fee165',
+                               '#4bc0c0', '#9966ff', '#ff9f40', '#c9cbcf'
+                           ]
+                       }]
+                   },
+                   options: {
+                       responsive: true,
+                       maintainAspectRatio: false
+                   }
+               });
+           })
+           .catch(error => console.error("Error loading chart:", error));
+   }
+
+document.getElementById('transactionForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // отключаем обычную отправку формы
+
+    const amount = document.getElementById('display').textContent.trim();
     const type = document.getElementById('type').value;
-    const category = document.getElementById('category').value;
-    alert(`Добавлена операция: ${type} на ${amount} в категории ${category}`);
+    const category = document.getElementById('categorySelect').value;
 
-    // Очистим калькулятор
-    displayValue = "";
-    updateDisplay();
-    document.getElementById('category').value = "";
-}
-
-// Получаем элементы для работы с категориями
-const categorySelect = document.getElementById('categorySelect');
-const newCategoryForm = document.getElementById('newCategoryForm');
-const newCategoryName = document.getElementById('newCategoryName');
-const submitNewCategory = document.getElementById('submitNewCategory');
-
-// Массив для хранения категорий
-let categories = [
-    { name: "Еда", color: "#ff6347" },
-    { name: "Развлечения", color: "#32cd32" },
-    { name: "Транспорт", color: "#1e90ff" }
-];
-
-// Функция для обновления выпадающего списка категорий
-function populateCategorySelect() {
-    categorySelect.innerHTML = ''; // Очищаем текущие элементы
-
-    categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.name;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
-    });
-
-    // Добавляем опцию для добавления новой категории
-    const addOption = document.createElement('option');
-    addOption.value = "add_new_category";
-    addOption.textContent = "Добавить новую категорию...";
-    categorySelect.appendChild(addOption);
-}
-
-// Показываем форму для добавления новой категории при выборе "Добавить новую категорию"
-categorySelect.addEventListener('change', function () {
-    if (categorySelect.value === 'add_new_category') {
-        newCategoryForm.style.display = 'block';
+    if (!amount || amount === "0") {
+        alert("Add amount");
+        return;
     }
+
+    if (!category || category === "add_new_category") {
+        alert("Please choose a valid category");
+        return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("amount", amount);
+    formData.append("type", type);
+    formData.append("category", category);
+
+    fetch('/add-transaction', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Успешно добавлено, обновим график
+            loadExpenseChart();
+            document.getElementById('display').textContent = "0";
+            document.getElementById('amountInput').value = "0";
+        } else {
+            throw new Error("Error adding transaction");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Failed to add transaction");
+    });
 });
 
-// Обработка добавления новой категории
-submitNewCategory.addEventListener('click', function () {
-    const newCategory = newCategoryName.value.trim();
-    if (newCategory) {
-        // Генерируем уникальный цвет
-        const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-
-        // Добавляем новую категорию в массив
-        categories.push({ name: newCategory, color: randomColor });
-
-        // Обновляем выпадающий список категорий
-        populateCategorySelect();
-
-        // Обновляем метки
-        updateCategoryLabels();
-
-        // Скрываем форму и очищаем поле ввода
-        newCategoryForm.style.display = 'none';
-        newCategoryName.value = '';
-    } else {
-        alert("Введите название категории!");
-    }
+window.addEventListener('DOMContentLoaded', () => {
+    populateCategorySelect();
+    loadExpenseChart(); // uploading the chart when the page loads
 });
-
-// Инициализация выпадающего списка при загрузке страницы
-populateCategorySelect();
-
-// Функция для отображения категорий в виде меток
-function updateCategoryLabels() {
-    const categoryLabelsDiv = document.getElementById('categoryLabels');
-    categoryLabelsDiv.innerHTML = ''; // Очищаем блок перед обновлением
-
-    // Создаем метки для каждой категории
-    categories.forEach(category => {
-        const label = document.createElement('span');
-        label.textContent = category.name;
-        label.style.backgroundColor = category.color;
-        label.style.padding = '5px 10px';
-        label.style.margin = '5px';
-        label.style.borderRadius = '5px';
-        label.style.color = 'white';
-        label.style.display = 'inline-block';
-
-        // Добавляем метку в блок
-        categoryLabelsDiv.appendChild(label);
-    });
-}
-
-// Вызовем эту функцию, когда нужно обновить метки (например, после добавления новой категории)
-updateCategoryLabels();
