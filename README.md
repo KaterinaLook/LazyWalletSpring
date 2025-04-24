@@ -65,7 +65,7 @@ The project is under development. Planned features include:
 - Enhanced UI
 
 Authors
-Created by Kateryna Lukianenko & Andrey ? as part of a Java course.
+Created by Kateryna Lukianenko & Andrey Ermakov as part of a Java course.
 
 🎓 "LazyWallet – a wallet that does everything for you!"
 
