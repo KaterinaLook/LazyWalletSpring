@@ -7,13 +7,13 @@
 </head>
 <body>
 <div class="container">
-    <!-- Верхняя левая часть — диаграмма -->
+    <!-- Chart -->
     <div class="chart-section">
         <p>Hello, <span th:text="${username}">User</span>!</p>
         <canvas id="expensesChart"></canvas>
     </div>
 
-    <!-- Правая часть — калькулятор -->
+    <!-- Calculator to adding transaction -->
     <div class="calculator-section">
         <h2>Add expense or income</h2>
         <form id="transactionForm" action="/add-transaction" method="post">
@@ -46,10 +46,10 @@
         </form>
     </div>
 
-    <!-- Блок для отображения категорий -->
+    <!-- Block for displaying categories -->
     <div id="categoryLabels"></div>
 
-    <!-- Нижняя панель -->
+    <!-- Footer -->
     <div class="footer-section">
         <button>Import from bank</button>
         <button>Make a report</button>
@@ -60,7 +60,7 @@
     </div>
 </div>
 
-<!-- 🌟 Модальное окно для добавления категории -->
+<!-- Modal window for adding a category -->
 <div id="newCategoryModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<!-- Библиотека диаграмм и JavaScript -->
+<!-- Library of chart and JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:src="@{/js/app.js}"></script>
 </body>

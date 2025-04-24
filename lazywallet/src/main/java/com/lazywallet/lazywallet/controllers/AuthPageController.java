@@ -1,5 +1,6 @@
 package com.lazywallet.lazywallet.controllers;
 
+import com.lazywallet.lazywallet.exceptions.EmailAlreadyExistsException;
 import com.lazywallet.lazywallet.models.UserRegistrationDTO;
 import com.lazywallet.lazywallet.services.UserService;
 import jakarta.validation.Valid;
@@ -28,8 +29,14 @@ public class AuthPageController {
     }
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute UserRegistrationDTO registrationDTO, Model model) {
-        userService.createUser(registrationDTO);
-        return "redirect:/login"; // После успешной регистрации перенаправляем на страницу входа
+        try {
+            userService.createUser(registrationDTO);
+            return "redirect:/login";
+        } catch (EmailAlreadyExistsException e) {
+            model.addAttribute("user", registrationDTO);
+            model.addAttribute("error", "This email already exists. Try another or login.");
+            return "register";
+        }
     }
 }
 

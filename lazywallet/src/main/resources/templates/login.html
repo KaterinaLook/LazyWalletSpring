@@ -4,7 +4,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Вход | LazyWallet</title>
+    <title>Enter | LazyWallet</title>
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
@@ -17,11 +17,11 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required class="input">
         <div th:if="${param.error}">
-            <p class="error">Неверный логин или пароль. Попробуйте снова.</p>
+            <p class="error">Incorrect login or password. Try again.</p>
         </div>
         <button type="submit" class="button">Log In</button>
     </form>
-    <p>Нет аккаунта? <a th:href="@{/register}">Зарегистрироваться</a></p>
+    <p>Don't have an account? <a th:href="@{/register}">Registration</a></p>
 </div>
 </body>
 </html>

@@ -55,7 +55,14 @@ body {
     margin-top: -8px;
     margin-bottom: 10px;
 }
-
+.error-message {
+    background-color: #ffe0e0;
+    color: #b00020;
+    border: 1px solid #ffcccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
 p {
     margin-top: 15px;
 }

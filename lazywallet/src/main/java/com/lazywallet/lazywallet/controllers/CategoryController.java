@@ -57,7 +57,6 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // проверим, есть ли уже такая категория
         if (categoryRepository.existsByNameIgnoreCaseAndUser(name, user)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Category already exists");
         }

@@ -49,7 +49,7 @@
                 categorySelect.appendChild(addOption);
             })
             .catch(error => {
-                console.error("Ошибка загрузки категорий:", error);
+                console.error("Error loading categories:", error);
             });
     }
 
@@ -74,7 +74,7 @@
        const selectedType = document.getElementById('type').value.toUpperCase(); // "EXPENSE" или "INCOME"
 
        if (!newCategory) {
-           alert("Введите название категории!");
+           alert("Enter category!");
            return;
        }
 
@@ -94,18 +94,18 @@
        })
        .then(response => {
            if (response.ok) {
-               return response.text(); // можно заменить на response.json() если нужно
+               return response.text();
            } else if (response.status === 409) {
-               throw new Error("Такая категория уже существует");
+               throw new Error("This category already exists");
            } else {
-               throw new Error("Не удалось добавить категорию");
+               throw new Error("Failed to add category");
            }
        })
        .then(message => {
            alert(message);
            newCategoryModal.style.display = 'none';
            newCategoryName.value = '';
-           populateCategorySelect(); // обновим список категорий
+           populateCategorySelect();
        })
        .catch(error => {
            alert(error.message);
@@ -146,7 +146,7 @@
                    }
                });
            })
-           .catch(error => console.error("Ошибка загрузки графика:", error));
+           .catch(error => console.error("Error loading chart:", error));
    }
 
 document.getElementById('transactionForm').addEventListener('submit', function (event) {
@@ -185,16 +185,16 @@ document.getElementById('transactionForm').addEventListener('submit', function (
             document.getElementById('display').textContent = "0";
             document.getElementById('amountInput').value = "0";
         } else {
-            throw new Error("Ошибка при добавлении транзакции");
+            throw new Error("Error adding transaction");
         }
     })
     .catch(error => {
         console.error(error);
-        alert("Не удалось добавить транзакцию");
+        alert("Failed to add transaction");
     });
 });
 
 window.addEventListener('DOMContentLoaded', () => {
     populateCategorySelect();
-    loadExpenseChart(); // 🟢 подгружаем график при загрузке страницы
+    loadExpenseChart(); // uploading the chart when the page loads
 });
